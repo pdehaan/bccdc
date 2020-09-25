@@ -23,7 +23,7 @@
     "url": "git+https://github.com/pdehaan/bccdc.git"
   },
   "scripts": {
-    "start": "node index",
+    "start": "./cli.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

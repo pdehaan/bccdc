@@ -2,7 +2,9 @@
 
 const lib = require("./lib");
 
-main(21);
+const days = process.env.DAYS || 21;
+
+main(days);
 
 async function main(days=21) {
   const res = await lib.fetchData(days);

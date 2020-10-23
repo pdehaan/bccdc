@@ -4,11 +4,12 @@ const parse = require("csv-parse/lib/sync");
 
 module.exports = {
   fetchData,
-  dataToString
+  dataToString,
 };
 
-async function fetchData(days=Number.MAX_SAFE_INTEGER) {
-  const uri = "http://www.bccdc.ca/Health-Info-Site/Documents/BCCDC_COVID19_Dashboard_Case_Details.csv";
+async function fetchData(days = 28) {
+  const uri =
+    "http://www.bccdc.ca/Health-Info-Site/Documents/BCCDC_COVID19_Dashboard_Case_Details.csv";
   const cases = await fetchCSV(uri);
   return aggregateData(cases).slice(-Math.abs(days));
 }
@@ -24,7 +25,12 @@ function aggregateData(cases = []) {
   let cumulative = 0;
   for (const $case of cases) {
     const key = $case.Reported_Date;
-    let res = results.get(key) || { date: key, daily: 0, cumulative: 0, highscore: false };
+    let res = results.get(key) || {
+      date: key,
+      daily: 0,
+      cumulative: 0,
+      highscore: false,
+    };
     cumulative += 1;
     res.daily += 1;
     res.cumulative = cumulative;
@@ -44,7 +50,8 @@ function aggregateData(cases = []) {
 
 function dataToString(data) {
   const color = data.highscore ? chalk.red : (txt) => txt;
-  return (
-    color(`${data.date}\t${data.daily}\t${data.cumulative}\t${data.highscore ? "Y" : ""}`)
-  );
+  const daily = data.daily.toLocaleString();
+  const cumulative = data.cumulative.toLocaleString();
+  const row = [data.date, daily, cumulative, data.highscore ? "Y" : ""];
+  return color(row.join("\t"));
 }

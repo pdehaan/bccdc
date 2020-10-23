@@ -24,6 +24,6 @@
   },
   "scripts": {
     "start": "./cli.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "DAYS=7 node cli"
   }
 }
